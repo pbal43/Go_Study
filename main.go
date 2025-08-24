@@ -1,9 +1,9 @@
 package main
 
 import (
-	"go_study/tasks/task_2"
+	"go_study/lessons"
 )
 
 func main() {
-	task_2.Task2()
+	lessons.Lesson4()
 }
