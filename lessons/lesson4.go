@@ -66,8 +66,6 @@ func Lesson4() {
 				c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 				return
 			}
-			fmt.Println(req)
-			fmt.Println(req.Task)
 			writeTask(req.Task, &id)
 			c.JSON(http.StatusOK, gin.H{
 				"message": "task created",
