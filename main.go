@@ -5,5 +5,5 @@ import (
 )
 
 func main() {
-	lessons.Lesson5()
+	lessons.Lesson6()
 }
