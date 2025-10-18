@@ -1,70 +1,45 @@
-package task_7
+package task_8
 
 import (
+	"errors"
 	"fmt"
-	"sync"
+	"sort"
 )
 
-type Cache struct {
-	cars  map[string]int
-	mutex sync.RWMutex
-}
-
-func NewCache() *Cache {
-	return &Cache{
-		cars:  make(map[string]int),
-		mutex: sync.RWMutex{},
+func Task8() {
+	var numberSlice []int
+	numberSlice = append(numberSlice, 1, 2, 5, 6, 2, 5, 8, 1, 9, 8, 3)
+	sort.Ints(numberSlice)
+	fmt.Println("Sorted slice: ", numberSlice)
+	// Sorted slice:  [1 1 2 2 3 5 5 6 8 9]
+	finder, err := binaryFinder(numberSlice, 0, len(numberSlice)-1, 9)
+	if err != nil {
+		fmt.Println(err)
+		return
 	}
+	fmt.Println("Index:", finder)
 }
 
-func (c *Cache) Get(name string) string {
-	c.mutex.RLock()
-	defer c.mutex.RUnlock()
-	_, ok := c.cars[name]
-	if !ok {
-		return "Empty"
+func binaryFinder(list []int, startIndex, finishIndex, number int) (int, error) {
+	if finishIndex >= len(list) {
+		return -1, errors.New("index out of range")
 	}
-	res := fmt.Sprintf("GET %s: %v", name, c.cars[name])
-	return res
-}
-
-func (c *Cache) Set(name string, value int) string {
-	c.mutex.Lock()
-	defer c.mutex.Unlock()
-	c.cars[name] = value
-
-	res := fmt.Sprintf("SET %s: %v", name, value)
-	return res
-}
-
-func Task7() {
-	cache := NewCache()    // инициализация пустого кеша
-	wg := sync.WaitGroup{} // инициализация пустой wg (для отслеживания выполнения горутин)
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		fmt.Println(cache.Set("car1", 1))
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		fmt.Println(cache.Set("car2", 2))
-	}()
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		fmt.Println(cache.Set("car1", 3))
-	}()
-
-	for i := 0; i < 10; i++ {
-		wg.Add(1)
-		go func(name string) {
-			defer wg.Done()
-			fmt.Println(cache.Get(name))
-		}("car1")
+	if len(list) == 0 {
+		return -1, errors.New("list is empty")
 	}
-	wg.Wait()
+	if startIndex > finishIndex {
+		return -1, errors.New("finish index must be bigger than start index (or NOT FOUND)")
+	}
+	middleIndex := startIndex + (finishIndex-startIndex)/2
+	fmt.Println("Middle index: ", middleIndex)
+	if list[middleIndex] == number {
+		return middleIndex, nil
+	}
+	if list[middleIndex] > number {
+		return binaryFinder(list, startIndex, middleIndex-1, number)
+	}
+	if list[middleIndex] < number {
+		return binaryFinder(list, middleIndex+1, finishIndex, number)
+	}
+	return -1, errors.New("unexpected error")
 }
