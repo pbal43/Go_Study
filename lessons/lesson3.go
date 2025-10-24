@@ -114,7 +114,7 @@ type EngineStart interface {
 }
 
 func (e Engine) StartEng(chanceCount int) {
-	fmt.Printf("Завелась с %s раз\n", chanceCount)
+	fmt.Printf("Завелась с %d раз\n", chanceCount)
 }
 
 func (e Engine) StopEng() {
