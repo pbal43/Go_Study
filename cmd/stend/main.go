@@ -3,5 +3,5 @@ package main
 import "go_study/lessons"
 
 func main() {
-	lessons.Lesson14()
+	lessons.Lesson16()
 }
