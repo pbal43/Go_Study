@@ -10,6 +10,7 @@ require (
 	github.com/gorilla/mux v1.8.1
 	github.com/rs/zerolog v1.34.0
 	golang.org/x/crypto v0.23.0
+	golang.org/x/sync v0.17.0
 )
 
 require (
